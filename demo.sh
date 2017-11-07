@@ -1,16 +1,16 @@
 #!/usr/bin/env bash
-# Script to demonstrate logging.bash
+# Script to demonstrate tinylogger
 
-source logging.bash
+source tinylogger.bash
 
-logging debug "first line of script"
-logging info "Starting script $0"
-logging debug "another debug statement"
+logger debug "first line of script"
+logger info "Starting script $0"
+logger debug "another debug statement"
 
-logging info "Current time is $( date )"
-logging warn "This is a scary warning"
-logging debug "do you like these debug statements?"
-logging error "Something terrible has happened"
+logger info "Current time is $( date )"
+logger warn "This is a scary warning"
+logger debug "do you like these debug statements?"
+logger error "Something terrible has happened"
 
-logging debug "end of script"
-logging info "Script completed, go home"
+logger debug "end of script"
+logger info "Script completed, go home"
