@@ -11,11 +11,11 @@ It supports four levels, default being `INFO`.
 
 ## Usage
 
-Source the `tinylogger.bash` file, and use the `logger` method.
+Source the `tinylogger.bash` file, and use the `tlog` method.
 The first argument is the level, and the second the log message.
 
     source tinylogger.bash
-    logger warn "This is a warning"
+    tlog warn "This is a warning"
 
 See [`demo.sh`](./demo.sh) for more.
 
@@ -41,6 +41,8 @@ You can control the logging level while calling a script by setting the `LOGGER_
 2017-11-07 19:05:52 - DEBUG - end of script
 2017-11-07 19:05:52 - INFO - Script completed, go home
 ```
+
+You can set `LOGGER_LVL=none` to disable all logging.
 
 ## Timestamp customisation
 
