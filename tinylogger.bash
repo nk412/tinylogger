@@ -1,4 +1,4 @@
-# logging.bash - A simple logging framework for Bash scripts in 10 lines
+# tinylogger.bash - A simple logging framework for Bash scripts in < 10 lines
 # https://github.com/nk412/tinylogger
 
 # Copyright (c) 2017 Nagarjuna Kumarappan
@@ -25,11 +25,12 @@
 
 if [ "$LOGGER_FMT" == "" ]; then LOGGER_FMT="%Y-%m-%d %H:%M:%S"; fi
 if [ "$LOGGER_LVL" == "" ]; then LOGGER_LVL="info" ; fi
-function logger {
+function tlog {
     action=$1 && shift
-    case $action in debug)  [[ $LOGGER_LVL =~ debug ]]           && echo "$( date "+${LOGGER_FMT}" ) - DEBUG - $@" 1>&2 ;;
-                    info)   [[ $LOGGER_LVL =~ debug|info ]]      && echo "$( date "+${LOGGER_FMT}" ) - INFO - $@" 1>&2  ;;
-                    warn)   [[ $LOGGER_LVL =~ debug|info|warn ]] && echo "$( date "+${LOGGER_FMT}" ) - WARN - $@" 1>&2  ;;
-                    error)  [[ ! $LOGGER_LVL =~ none ]]          && echo "$( date "+${LOGGER_FMT}" ) - ERROR - $@" 1>&2 ;;
+    case $action in 
+        debug)  [[ $LOGGER_LVL =~ debug ]]           && echo "$( date "+${LOGGER_FMT}" ) - DEBUG - $@" 1>&2 ;;
+        info)   [[ $LOGGER_LVL =~ debug|info ]]      && echo "$( date "+${LOGGER_FMT}" ) - INFO - $@" 1>&2  ;;
+        warn)   [[ $LOGGER_LVL =~ debug|info|warn ]] && echo "$( date "+${LOGGER_FMT}" ) - WARN - $@" 1>&2  ;;
+        error)  [[ ! $LOGGER_LVL =~ none ]]          && echo "$( date "+${LOGGER_FMT}" ) - ERROR - $@" 1>&2 ;;
     esac
     true; }
