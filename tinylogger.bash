@@ -23,8 +23,10 @@
 #
 # Author: Nagarjuna Kumarappan <nagarjuna.412@gmail.com>
 
-if [ "$LOGGER_FMT" == "" ]; then LOGGER_FMT="%Y-%m-%d %H:%M:%S"; fi
-if [ "$LOGGER_LVL" == "" ]; then LOGGER_LVL="info" ; fi
+# defaults
+LOGGER_FMT=${LOGGER_FMT:="%Y-%m-%d %H:%M:%S"}
+LOGGER_LVL=${LOGGER_LVL:="info"}
+
 function tlog {
     action=$1 && shift
     case $action in 
