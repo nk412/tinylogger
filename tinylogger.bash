@@ -31,24 +31,25 @@ LOGGER_COLOR=${LOGGER_COLOR:="1"}
 _tlog_levels=(error warn info debug)
 _tlog_colors=('\033[0;31m' '\033[0;33m' '\033[0;32m' '\033[0;36m')
 
-function _print_lvl {
+function _tlog_head {
   idx=$1
   nc='\033[0m'
   lvlname=${_tlog_levels[$idx]^^}
 
   if (("$LOGGER_COLOR")); then
-    printf "${_tlog_colors[$idx]}${lvlname}${nc}"
+    printf "$(date "+${LOGGER_FMT}") - ${_tlog_colors[$idx]}${lvlname}${nc}"
   else
-    printf "${lvlname}"
+    printf "$(date "+${LOGGER_FMT}") - ${lvlname}"
   fi
 }
 
 function tlog {
-    action=$1 && shift
-    case $action in 
-        debug)  [[ $LOGGER_LVL =~ debug ]]           && echo "$( date "+${LOGGER_FMT}" ) - $(_print_lvl 3) - $@" 1>&2 ;;
-        info)   [[ $LOGGER_LVL =~ debug|info ]]      && echo "$( date "+${LOGGER_FMT}" ) - $(_print_lvl 2) - $@" 1>&2  ;;
-        warn)   [[ $LOGGER_LVL =~ debug|info|warn ]] && echo "$( date "+${LOGGER_FMT}" ) - $(_print_lvl 1) - $@" 1>&2  ;;
-        error)  [[ ! $LOGGER_LVL =~ none ]]          && echo "$( date "+${LOGGER_FMT}" ) - $(_print_lvl 0) - $@" 1>&2 ;;
-    esac
-    true; }
+  action=$1 && shift
+  case $action in
+    debug)  [[ $LOGGER_LVL =~ debug ]]           && echo "$(_tlog_head 3) - $@" 1>&2 ;;
+    info)   [[ $LOGGER_LVL =~ debug|info ]]      && echo "$(_tlog_head 2) - $@" 1>&2  ;;
+    warn)   [[ $LOGGER_LVL =~ debug|info|warn ]] && echo "$(_tlog_head 1) - $@" 1>&2  ;;
+    error)  [[ ! $LOGGER_LVL =~ none ]]          && echo "$(_tlog_head 0) - $@" 1>&2 ;;
+  esac
+  true;
+}
