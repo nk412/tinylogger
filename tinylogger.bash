@@ -24,15 +24,31 @@
 # Author: Nagarjuna Kumarappan <nagarjuna.412@gmail.com>
 
 # defaults
-LOGGER_FMT=${LOGGER_FMT:="%Y-%m-%d %H:%M:%S"}
 LOGGER_LVL=${LOGGER_LVL:="info"}
+LOGGER_FMT=${LOGGER_FMT:="%Y-%m-%d %H:%M:%S"}
+LOGGER_COLOR=${LOGGER_COLOR:="1"}
+
+_tlog_levels=(error warn info debug)
+_tlog_colors=('\033[0;31m' '\033[0;33m' '\033[0;32m' '\033[0;36m')
+
+function _print_lvl {
+  idx=$1
+  nc='\033[0m'
+  lvlname=${_tlog_levels[$idx]^^}
+
+  if (("$LOGGER_COLOR")); then
+    printf "${_tlog_colors[$idx]}${lvlname}${nc}"
+  else
+    printf "${lvlname}"
+  fi
+}
 
 function tlog {
     action=$1 && shift
     case $action in 
-        debug)  [[ $LOGGER_LVL =~ debug ]]           && echo "$( date "+${LOGGER_FMT}" ) - DEBUG - $@" 1>&2 ;;
-        info)   [[ $LOGGER_LVL =~ debug|info ]]      && echo "$( date "+${LOGGER_FMT}" ) - INFO - $@" 1>&2  ;;
-        warn)   [[ $LOGGER_LVL =~ debug|info|warn ]] && echo "$( date "+${LOGGER_FMT}" ) - WARN - $@" 1>&2  ;;
-        error)  [[ ! $LOGGER_LVL =~ none ]]          && echo "$( date "+${LOGGER_FMT}" ) - ERROR - $@" 1>&2 ;;
+        debug)  [[ $LOGGER_LVL =~ debug ]]           && echo "$( date "+${LOGGER_FMT}" ) - $(_print_lvl 3) - $@" 1>&2 ;;
+        info)   [[ $LOGGER_LVL =~ debug|info ]]      && echo "$( date "+${LOGGER_FMT}" ) - $(_print_lvl 2) - $@" 1>&2  ;;
+        warn)   [[ $LOGGER_LVL =~ debug|info|warn ]] && echo "$( date "+${LOGGER_FMT}" ) - $(_print_lvl 1) - $@" 1>&2  ;;
+        error)  [[ ! $LOGGER_LVL =~ none ]]          && echo "$( date "+${LOGGER_FMT}" ) - $(_print_lvl 0) - $@" 1>&2 ;;
     esac
     true; }
