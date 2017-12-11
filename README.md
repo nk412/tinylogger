@@ -44,6 +44,9 @@ You can control the logging level while calling a script by setting the `LOGGER_
 
 You can set `LOGGER_LVL=none` to disable all logging.
 
+## Color
+By default, log output is colorized by level. This behavior can be disabled by setting `LOGGER_COLOR=0`
+
 ## Timestamp customisation
 
 Underneath, the `date` command is used to display the timestamp. Simply set the `LOGGER_FMT` to any valid format supported by `date`.
