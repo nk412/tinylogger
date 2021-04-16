@@ -4,9 +4,9 @@ An *extremely* lightweight logging framework for BASH scripts.
 Developed and tested on MacOS. This should work on any BASH platform.
 
 ## Log levels
-It supports four levels, default being `INFO`.
+It supports five levels, default being `INFO`.
 
-    ERROR > WARN > INFO > DEBUG
+    FATAL > ERROR > WARN > INFO > DEBUG
 
 
 ## Usage
