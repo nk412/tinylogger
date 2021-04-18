@@ -14,3 +14,6 @@ tlog error "Something terrible has happened"
 
 tlog debug "end of script"
 tlog info "Script completed, go home"
+
+tlog fatal "Fatal Warning"
+tlog xyz "Wrong log level"

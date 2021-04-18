@@ -22,17 +22,33 @@
 # THE SOFTWARE.
 #
 # Author: Nagarjuna Kumarappan <nagarjuna.412@gmail.com>
+#
+# 15.04.2021
+#
+# Changes:
+#  - Log Level fatal added
+#  - Log output redirected to log file
+#  - shellcheck recommendations implemented
+#  - Default catch added
+#
+# Author: Markus Heene <markus.heene@gmail.com>
 
 # defaults
 LOGGER_FMT=${LOGGER_FMT:="%Y-%m-%d %H:%M:%S"}
-LOGGER_LVL=${LOGGER_LVL:="info"}
+# Log messages with the priority from at least will be printed
+LOGGER_LVL=${LOGGER_LVL:="info"} 
+LOG_FILE="log.txt"
 
 function tlog {
+    local action
     action=$1 && shift
     case $action in 
-        debug)  [[ $LOGGER_LVL =~ debug ]]           && echo "$( date "+${LOGGER_FMT}" ) - DEBUG - $@" 1>&2 ;;
-        info)   [[ $LOGGER_LVL =~ debug|info ]]      && echo "$( date "+${LOGGER_FMT}" ) - INFO - $@" 1>&2  ;;
-        warn)   [[ $LOGGER_LVL =~ debug|info|warn ]] && echo "$( date "+${LOGGER_FMT}" ) - WARN - $@" 1>&2  ;;
-        error)  [[ ! $LOGGER_LVL =~ none ]]          && echo "$( date "+${LOGGER_FMT}" ) - ERROR - $@" 1>&2 ;;
+        debug)  [[ $LOGGER_LVL =~ debug ]]           && echo "$( date "+${LOGGER_FMT}" ) - DEBUG - $*" >>"${LOG_FILE}" ;;
+        info)   [[ $LOGGER_LVL =~ debug|info ]]      && echo "$( date "+${LOGGER_FMT}" ) - INFO - $*" >>"${LOG_FILE}"  ;;
+        warn)   [[ $LOGGER_LVL =~ debug|info|warn ]] && echo "$( date "+${LOGGER_FMT}" ) - WARN - $*" >>"${LOG_FILE}"  ;;
+        error)  [[ ! $LOGGER_LVL =~ debug|info|warn|error ]]          && echo "$( date "+${LOGGER_FMT}" ) - ERROR - $*" | tee -a "${LOG_FILE}" 1>&2 ;;
+	fatal)  [[ ! $LOGGER_LVL =~ none ]]                && echo "$( date "+${LOGGER_FMT}" ) - FATAL - $*" | tee -a "${LOG_FILE}" 1>&2 ;;
+	*) echo "$( date "+${LOGGER_FMT}" ) - FATAL - $action unknown Loglevel" | tee -a "${LOG_FILE}" 1>&2 ;;
+
     esac
     true; }
